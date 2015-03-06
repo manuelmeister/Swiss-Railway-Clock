@@ -1,0 +1,188 @@
+body {
+    margin: 3vmin 0;
+}
+
+footer {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-align: center;
+    margin-top: 20px;
+    color: gray;
+}
+
+footer a {
+    text-decoration: none;
+    color: #208ad2;
+}
+
+.demo-container {
+    width: 94vw;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.demo-container.clocks.single .clock {
+    height: 85vmin;
+    width: 85vmin;
+    padding: 0;
+    margin: auto;
+    border: 10px solid #424242;
+}
+
+.clock {
+    border-radius: 50%;
+    background: -webkit-radial-gradient(#000, #000 0.1em, #fff 0.1em, #fff), #fff;
+    background: radial-gradient(#000, #000 0.1em, #fff 0.1em, #fff), #fff;
+    display: inline-block;
+    padding-bottom: 31.333%;
+    position: relative;
+    width: 31.333%;
+    opacity: 0;
+}
+
+.clock::after {
+    background: red;
+    border-radius: 50%;
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 4%;
+    height: 4%;
+    z-index: 10;
+}
+
+.clock.show {
+    opacity: 1;
+    -webkit-transition: all 2.5s cubic-bezier(.12, 1.03, .34, 1);
+    transition: all 2.5s cubic-bezier(.12, 1.03, .34, 1);
+}
+
+.clock.station {
+    background: #fff url('images/station_clock.svg') no-repeat center;
+    background-size: 95%;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.2) inset;
+}
+
+.clock.station .seconds::before {
+    background: red;
+    border-radius: 100%;
+    content: "";
+    position: absolute;
+    top: -9%;
+    left: -260%;
+    height: 17.98765%;
+    width: 600%;
+}
+
+.bounce .minutes-container {
+    -webkit-transition: -webkit-animation 0.3s cubic-bezier(.4, 2.08, .55, .44);
+    transition: animation 0.3s cubic-bezier(.4, 2.08, .55, .44);
+}
+
+.minutes-container, .hours-container, .seconds-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.seconds {
+    background: red;
+    width: 1.25%;
+    height: 42%;
+    position: absolute;
+    left: 49.39%;
+    top: 20%;
+    -webkit-transform-origin: 50% 71%;
+    -ms-transform-origin: 50% 71%;
+    transform-origin: 50% 71%;
+    z-index: 8;
+}
+
+.minutes {
+    background: #000;
+    width: 4.2%;
+    height: 55%;
+    position: absolute;
+    left: 48.1%;
+    top: 6.95%;
+    -webkit-transform-origin: 50% 78.5%;
+    -ms-transform-origin: 50% 78.5%;
+    transform-origin: 50% 78.5%;
+}
+
+.hours {
+    background: #000;
+    width: 3.5%;
+    height: 40%;
+    position: absolute;
+    left: 48.25%;
+    top: 22%;
+    -webkit-transform-origin: 50% 71%;
+    -ms-transform-origin: 50% 71%;
+    transform-origin: 50% 71%;
+}
+
+.hours-container {
+    animation: rotate 86400s infinite linear;
+    -webkit-animation: rotate 86400s infinite linear;
+}
+
+.minutes-container {
+}
+
+.seconds-container.active {
+    -webkit-animation: rotate 57.5s cubic-bezier(.34,.35,.54,.53) 1;
+    animation: rotate 57.5s cubic-bezier(.34,.35,.54,.53) 1;
+}
+
+article div div, article div div:before {
+    box-shadow: 0 0 5px 0px rgba(0,0,0,0.05);
+}
+
+@keyframes none {
+    100% {
+
+    }
+}
+
+@-webkit-keyframes none {
+    100% {
+
+    }
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotateZ(1turn);
+    }
+}
+
+@-webkit-keyframes rotate {
+    100% {
+        -webkit-transform: rotateZ(1turn);
+    }
+}
+
+@keyframes rotate-seconds {
+    98.5% {
+        transform: rotateZ(1turn);
+    }
+    100% {
+        transform: rotateZ(1turn);
+    }
+}
+
+@-webkit-keyframes rotate-seconds {
+    98.5% {
+        -webkit-transform: rotateZ(1turn);
+    }
+    100% {
+        -webkit-transform: rotateZ(1turn);
+    }
+}
