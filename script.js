@@ -43,10 +43,13 @@ function initLocalClocks() {
     console.log(hours + ":" + minutes);
 
     //Set the hands
+    var final_hours = (hours * 30) + (minutes / 2);
+
     $('.hours').css({
-        '-webkit-transform': 'rotateZ(' + (hours * 30) + (minutes / 2) + 'deg)',
-        'transform': 'rotateZ(' + (hours * 30) + (minutes / 2) + 'deg)'
+        '-webkit-transform': 'rotateZ(' + final_hours + 'deg)',
+        'transform': 'rotateZ(' + final_hours + 'deg)'
     });
+
     $('.minutes').css({
         '-webkit-transform': 'rotateZ(' + (minutes * 6)+ 'deg)',
         'transform': 'rotateZ(' + (minutes * 6) + 'deg)'
