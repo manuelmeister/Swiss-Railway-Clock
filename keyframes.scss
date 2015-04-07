@@ -1,0 +1,25 @@
+@for $i from 0 through 59 {
+  @keyframes rotate-#{$i} {
+    0% {
+      transform: rotateZ($i * 6deg);
+    }
+    98.5% {
+      transform: rotateZ(1turn);
+    }
+    100% {
+      transform: rotateZ(1turn);
+    }
+  }
+
+  @-webkit-keyframes rotate-#{$i} {
+    0% {
+      -webkit-transform: rotateZ($i * 6deg);
+    }
+    98.5% {
+      -webkit-transform: rotateZ(1turn);
+    }
+    100% {
+      -webkit-transform: rotateZ(1turn);
+    }
+  }
+}
