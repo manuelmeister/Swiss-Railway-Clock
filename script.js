@@ -102,7 +102,7 @@ function resetAnimation() {
 
 function set_First_CSS_Second_Animation() {
     $('#seconds-container').css({
-        '-webkit-animation': 'rotate-' + seconds + ' ' + (59 - seconds) + 's linear',
-        'animation': 'rotate-' + seconds + ' ' + (59 - seconds) + 's linear'
+        '-webkit-animation': 'rotate-' + seconds + ' ' + (58 - seconds) + 's linear',
+        'animation': 'rotate-' + seconds + ' ' + (58 - seconds) + 's linear'
     });
 }
