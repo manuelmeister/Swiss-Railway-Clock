@@ -4,7 +4,7 @@ body {
 }
 
 footer {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-align: center;
     margin-top: 20px;
     color: gray;
@@ -79,11 +79,6 @@ footer a {
     width: 600%;
 }
 
-.bounce .minutes-container {
-    -webkit-transition: -webkit-animation 0.3s cubic-bezier(.4, 2.08, .55, .44);
-    transition: animation 0.3s cubic-bezier(.4, 2.08, .55, .44);
-}
-
 .minutes-container, .hours-container, .seconds-container {
     position: absolute;
     top: 0;
@@ -115,6 +110,7 @@ footer a {
     -webkit-transform-origin: 50% 78.5%;
     -ms-transform-origin: 50% 78.5%;
     transform-origin: 50% 78.5%;
+    transition: transform 0.3s cubic-bezier(.4, 2.08, .55, .44);
 }
 
 .hours {
@@ -134,28 +130,13 @@ footer a {
     -webkit-animation: rotate 86400s infinite linear;
 }
 
-.minutes-container {
-}
-
 .seconds-container.active {
-    -webkit-animation: rotate 57.5s cubic-bezier(.34,.35,.54,.53) 1;
-    animation: rotate 57.5s cubic-bezier(.34,.35,.54,.53) 1;
+    -webkit-animation: rotate 58.5s cubic-bezier(.04, .07, .6, .64) 1;
+    animation: rotate 58.5s cubic-bezier(.04, .07, .6, .64) 1;
 }
 
 article div div, article div div:before {
     box-shadow: 0 0 5px 0px rgba(0,0,0,0.05);
-}
-
-@keyframes none {
-    100% {
-
-    }
-}
-
-@-webkit-keyframes none {
-    100% {
-
-    }
 }
 
 @keyframes rotate {
@@ -165,24 +146,6 @@ article div div, article div div:before {
 }
 
 @-webkit-keyframes rotate {
-    100% {
-        -webkit-transform: rotateZ(1turn);
-    }
-}
-
-@keyframes rotate-seconds {
-    98.5% {
-        transform: rotateZ(1turn);
-    }
-    100% {
-        transform: rotateZ(1turn);
-    }
-}
-
-@-webkit-keyframes rotate-seconds {
-    98.5% {
-        -webkit-transform: rotateZ(1turn);
-    }
     100% {
         -webkit-transform: rotateZ(1turn);
     }
