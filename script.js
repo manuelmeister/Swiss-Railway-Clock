@@ -5,34 +5,22 @@ $(document)
 
         initLocalClocks();
 
-        // new Date
-        refreshDate();
-
-        console.log('Animation: rotate-' + seconds);
-
         // set animation to the generated @keyframes for the remaining time until the next minute
         set_First_CSS_Second_Animation();
-
-        $('#seconds-container')
-            // when the animation ends, the setSeconds() function will get executed
-            .bind('animationEnd webkitAnimationEnd', function (e) {
-                setSeconds();
-            })
-        ;
     })
     // When you change the tab and come back, the hands are repainted
-    .on('visibilitychange', function () {
+    .on('visibilitychange', refocus);
 
-        // replaces the #seconds-container, to reset the animation
-        resetAnimation();
+$(window).on('focus', refocus);
 
-        refreshDate();
+function refocus() {
+    initLocalClocks();
 
-        set_First_CSS_Second_Animation();
+    // replaces the #seconds-container, to reset the animation
+    resetAnimation();
 
-        initLocalClocks();
-    });
-
+    set_First_CSS_Second_Animation();
+}
 
 function initLocalClocks() {
     // Get the local time using JS
@@ -101,8 +89,13 @@ function resetAnimation() {
 }
 
 function set_First_CSS_Second_Animation() {
-    $('#seconds-container').css({
-        '-webkit-animation': 'rotate-' + seconds + ' ' + (58 - seconds) + 's linear',
-        'animation': 'rotate-' + seconds + ' ' + (58 - seconds) + 's linear'
-    });
+    $('#seconds-container')
+            // when the animation ends, the setSeconds() function will get executed
+            .bind('animationEnd webkitAnimationEnd', function (e) {
+                setSeconds();
+            })
+            .css({
+                '-webkit-animation': 'rotate-' + seconds + ' ' + (58 - seconds) + 's linear',
+                'animation': 'rotate-' + seconds + ' ' + (58 - seconds) + 's linear'
+            });
 }
