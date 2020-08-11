@@ -38,10 +38,10 @@ footer a {
     padding-bottom: 31.333%;
     position: relative;
     width: 31.333%;
-    opacity: 0;
 }
 
 .clock::after {
+    display: none;
     background: red;
     border-radius: 50%;
     content: "";
@@ -56,12 +56,6 @@ footer a {
     z-index: 10;
 }
 
-.clock.show {
-    opacity: 1;
-    -webkit-transition: all 2.5s cubic-bezier(.12, 1.03, .34, 1);
-    transition: all 2.5s cubic-bezier(.12, 1.03, .34, 1);
-}
-
 .clock.station {
     background: #fff url('images/station_clock.svg') no-repeat center;
     background-size: 95%;
@@ -73,10 +67,10 @@ footer a {
     border-radius: 100%;
     content: "";
     position: absolute;
-    top: -9%;
-    left: -260%;
-    height: 17.98765%;
-    width: 600%;
+    top: -15%;
+    left: -342%;
+    height: 23.98765%;
+    width: 800%;
 }
 
 .minutes-container, .hours-container, .seconds-container {
@@ -85,6 +79,7 @@ footer a {
     right: 0;
     bottom: 0;
     left: 0;
+    opacity: 0;
 }
 
 .seconds {
@@ -110,7 +105,6 @@ footer a {
     -webkit-transform-origin: 50% 78.5%;
     -ms-transform-origin: 50% 78.5%;
     transform-origin: 50% 78.5%;
-    transition: transform 0.3s cubic-bezier(.4, 2.08, .55, .44);
 }
 
 .hours {
@@ -125,28 +119,6 @@ footer a {
     transform-origin: 50% 71%;
 }
 
-.hours-container {
-    animation: rotate 86400s infinite linear;
-    -webkit-animation: rotate 86400s infinite linear;
-}
-
-.seconds-container.active {
-    -webkit-animation: rotate 58.5s cubic-bezier(.04, .07, .6, .64) 1;
-    animation: rotate 58.5s cubic-bezier(.04, .07, .6, .64) 1;
-}
-
 article div div, article div div:before {
-    box-shadow: 0 0 5px 0px rgba(0,0,0,0.05);
-}
-
-@keyframes rotate {
-    100% {
-        transform: rotateZ(1turn);
-    }
-}
-
-@-webkit-keyframes rotate {
-    100% {
-        -webkit-transform: rotateZ(1turn);
-    }
+    box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.05);
 }

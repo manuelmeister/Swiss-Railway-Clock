@@ -1,101 +1,108 @@
-$(document)
+const timeAroundClock = 58500
+const degreePerMinute = 360 / 60
+const degreePerHour = 360 / 12
+const degreePerHourInMinutes = degreePerHour / 60
 
-    // on document ready
-    .ready(function () {
+window.addEventListener('DOMContentLoaded', () => {
+    firstMinute()
+})
 
-        initLocalClocks();
-
-        // set animation to the generated @keyframes for the remaining time until the next minute
-        set_First_CSS_Second_Animation();
-    })
-    // When you change the tab and come back, the hands are repainted
-    .on('visibilitychange', refocus);
-
-$(window).on('focus', refocus);
-
-function refocus() {
-    initLocalClocks();
-
-    // replaces the #seconds-container, to reset the animation
-    resetAnimation();
-
-    set_First_CSS_Second_Animation();
-}
-
-function initLocalClocks() {
-    // Get the local time using JS
-    refreshDate();
-    global_current_minute = minutes
-
-    // Log current time
-    console.log(hours + ":" + minutes);
-
-    //Set the hands
-    var final_hours = (hours * 30) + (minutes / 2);
-
-    $('.hours').css({
-        '-webkit-transform': 'rotateZ(' + final_hours + 'deg)',
-        'transform': 'rotateZ(' + final_hours + 'deg)'
-    });
-
-    $('.minutes').css({
-        '-webkit-transform': 'rotateZ(' + (minutes * 6)+ 'deg)',
-        'transform': 'rotateZ(' + (minutes * 6) + 'deg)'
-    });
-}
-
-function setSeconds() {
-    $('#seconds-container').attr('style', '').removeClass('active');
-
-    // replaces the #seconds-container, to reset the animation
-    resetAnimation();
-
-    //Wait for "impulse" of new minute
-    timing = setInterval(function () {
-
-        refreshDate();
-        console.log("minutes: " + minutes + "| seconds: " + seconds);
-
-        // checks if the minute has changed or if the next minute is in the next hour
-        if (((global_current_minute + 1) == minutes) || ((global_current_minute == 59) && (minutes == 0))) {
-
-            clearInterval(timing);
-            setTimeout(function () {
-                activateSeconds();
-            }, 250);
-        }
-    }, 250);
-
-}
-
-function activateSeconds() {
-    console.log("it's time: " + date.getMinutes());
-    initLocalClocks();
-    $('#seconds-container').addClass('active');
-}
-
-function refreshDate() {
-    date = new Date;
-    seconds = date.getSeconds();
-    minutes = date.getMinutes();
-    hours = date.getHours();
-}
-
-function resetAnimation() {
-    var el = $('.seconds-container'),
-        newone = el.clone(true);
-    el.before(newone);
-    $(".seconds-container:nth-child(-n+3)").remove();
-}
-
-function set_First_CSS_Second_Animation() {
-    $('#seconds-container')
-            // when the animation ends, the setSeconds() function will get executed
-            .bind('animationEnd webkitAnimationEnd', function (e) {
-                setSeconds();
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        let animations = document.getAnimations()
+        if (animations.length > 0) {
+            animations.forEach(animation => {
+                animation.finish()
             })
-            .css({
-                '-webkit-animation': 'rotate-' + seconds + ' ' + (58 - seconds) + 's linear',
-                'animation': 'rotate-' + seconds + ' ' + (58 - seconds) + 's linear'
-            });
+        }
+    } else {
+        firstMinute()
+    }
+})
+
+function firstMinute() {
+    const dateNow = new Date();
+    const elapsed = dateNow.getSeconds() * 1000 + dateNow.getMilliseconds()
+
+    hour(dateNow.getHours(), dateNow.getMinutes())
+    setMinute(dateNow.getMinutes())
+    if (elapsed >= timeAroundClock) {
+        finishedMinuteAnimation()
+    } else {
+        second(elapsed / timeAroundClock, (timeAroundClock - elapsed) / timeAroundClock)
+    }
+}
+
+async function finishedMinuteAnimation() {
+    const initialHour = new Date().getHours()
+    const initialMinute = new Date().getMinutes()
+    let newMinute = await nextMinute()
+    if (newMinute === 0) {
+        newMinute = 60
+    }
+    second()
+    minute(initialMinute, newMinute)
+    hour(initialHour, newMinute)
+}
+
+function nextMinute() {
+    return new Promise(resolve => {
+        const now = new Date()
+        const remainingMilliseconds = ((60 - now.getSeconds()) * 1000) + (1000 - now.getMilliseconds())
+        setTimeout(() => {
+            resolve(new Date().getMinutes())
+        }, remainingMilliseconds)
+    })
+}
+
+function hour(hour, minute) {
+    const hourInDegree = (hour % 12) * degreePerHour
+    const hourElement = document.querySelector('.hours-container');
+    hourElement.style.transform = 'rotate(' + (hourInDegree + (minute * degreePerHourInMinutes)) + 'deg)'
+    hourElement.style.opacity = 1
+}
+
+function setMinute(value) {
+    const minuteElement = document.querySelector('.minutes-container');
+    minuteElement.style.transform = 'rotate(' + (value * degreePerMinute) + 'deg)'
+    minuteElement.style.opacity = 1
+}
+
+function minute(initialMinute, newMinute) {
+    const minuteElement = document.querySelector('.minutes-container');
+    if (newMinute === 60) {
+        let animation = minuteElement.animate([
+            {transform: 'rotate(' + initialMinute * degreePerMinute + 'deg)'},
+            {transform: 'rotate(' + newMinute * degreePerMinute + 'deg)'}
+        ], {duration: 300, iterations: 1, easing: 'cubic-bezier(1, 2.52, 0.71, 0.6)', fill: 'forwards'})
+        animation.finished.then(() => {
+            minuteElement.style.transform = 'rotate(0deg)'
+        })
+        animation.play()
+    } else {
+        let animation = minuteElement.animate([
+            {transform: 'rotate(' + initialMinute * degreePerMinute + 'deg)'},
+            {transform: 'rotate(' + newMinute * degreePerMinute + 'deg)'}
+        ], {duration: 300, iterations: 1, easing: 'cubic-bezier(1, 2.52, 0.71, 0.6)', fill: 'both'}).play()
+    }
+}
+
+function second(start = 0, iterations = 1) {
+    const secondsElement = document.querySelector('.seconds-container');
+    let animation = secondsElement.animate([
+        {transform: 'rotate(0)', easing: 'cubic-bezier(0.2, 0, 1, 1)'},
+        {transform: 'rotate(0.25turn)', easing: 'cubic-bezier(0.11, 0.12, 0.85, 0.86)', offset: 0.25},
+        {transform: 'rotate(0.95turn)', easing: 'cubic-bezier(1, 1.36, 0.88, 0.88)', offset: 0.95},
+        {transform: 'rotate(1turn)'}
+    ], {
+        duration: timeAroundClock,
+        fill: 'none',
+        iterationStart: start,
+        iterations: iterations
+    })
+    animation.finished.then(() => {
+        finishedMinuteAnimation()
+    })
+    animation.play()
+    secondsElement.style.opacity = 1
 }
